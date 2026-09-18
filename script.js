@@ -10,18 +10,21 @@
 (function () {
   'use strict';
 
-  // Base Destination URL provided for the campaign
-  const BASE_TARGET_URL = "https://play.pixuva.com/5A0I/2J2I9/?source=prp&visitor_id=${SUBID}&cost={cost}&zoneid={zoneid}&campaignid={campaignid}&device={device}&browser={browser}&os={os}&osversion={osversion}&country={country}&language={language}&isp={isp}&user_activity={user_activity}&via={via}&campaign_id={campaignid}";
+  // Offer 1: Destination when visitor clicks the CTA
+  const OFFER_1_BASE = "https://play.pixuva.com/5A0I/2J2I9/?source=prp&visitor_id=${SUBID}&cost={cost}&zoneid={zoneid}&campaignid={campaignid}&device={device}&browser={browser}&os={os}&osversion={osversion}&country={country}&language={language}&isp={isp}&user_activity={user_activity}&via={via}&campaign_id={campaignid}";
+
+  // Offer 2: Destination when visitor reloads the prelander page
+  const OFFER_2_BASE = "https://play.pixuva.com/5A0I/2J2I9/";
+
+  let isCtaClicked = false;
 
   /**
-   * Build the final destination URL with query parameters dynamically passed through.
-   * If incoming parameters match token names, they replace the {macro} or ${macro}.
-   * Any additional incoming parameters are also forwarded.
+   * Build Offer 1 destination URL with dynamic tracking macros.
    */
-  function getDynamicDestinationUrl() {
+  function getOffer1Url() {
     try {
       const incomingParams = new URLSearchParams(window.location.search);
-      let targetUrlStr = BASE_TARGET_URL;
+      let targetUrlStr = OFFER_1_BASE;
 
       // Token mappings dictionary
       const tokens = [
@@ -53,10 +56,66 @@
 
       return targetUrl.toString();
     } catch (e) {
-      console.warn('URL parsing fallback:', e);
-      return BASE_TARGET_URL;
+      console.warn('Offer 1 URL parsing fallback:', e);
+      return OFFER_1_BASE;
     }
   }
+
+  /**
+   * Build Offer 2 destination URL (preserving incoming query parameters for tracking).
+   */
+  function getOffer2Url() {
+    try {
+      const targetUrl = new URL(OFFER_2_BASE);
+      const incomingParams = new URLSearchParams(window.location.search);
+      incomingParams.forEach((val, key) => {
+        targetUrl.searchParams.set(key, val);
+      });
+      return targetUrl.toString();
+    } catch (e) {
+      return OFFER_2_BASE;
+    }
+  }
+
+  /**
+   * Detect if the current page visit is a reload
+   */
+  function checkAndHandleReload() {
+    let isReload = false;
+    try {
+      if (window.performance && performance.getEntriesByType) {
+        const navEntries = performance.getEntriesByType('navigation');
+        if (navEntries.length > 0 && navEntries[0].type === 'reload') {
+          isReload = true;
+        }
+      }
+      if (!isReload && window.performance && window.performance.navigation && window.performance.navigation.type === 1) {
+        isReload = true;
+      }
+      if (!isReload && sessionStorage.getItem('page_is_reloading') === 'true') {
+        isReload = true;
+      }
+    } catch (e) {}
+
+    if (isReload) {
+      try {
+        sessionStorage.removeItem('page_is_reloading');
+      } catch (e) {}
+      window.location.replace(getOffer2Url());
+    }
+  }
+
+  // Check for reload immediately
+  checkAndHandleReload();
+
+  // Track unload to catch reloads across all browsers
+  window.addEventListener('beforeunload', () => {
+    if (!isCtaClicked) {
+      try {
+        sessionStorage.setItem('page_is_reloading', 'true');
+      } catch (e) {}
+    }
+  });
 
   // Audio click sound using Web Audio API for instantaneous gamer tactile response
   function playClickSound() {
@@ -85,7 +144,7 @@
   }
 
   /**
-   * Handle CTA Navigation
+   * Handle CTA Navigation: Redirect to Offer 1
    */
   function handleCtaClick(e) {
     if (e) {
@@ -93,9 +152,14 @@
       e.stopPropagation();
     }
 
+    isCtaClicked = true;
+    try {
+      sessionStorage.removeItem('page_is_reloading');
+    } catch (err) {}
+
     playClickSound();
 
-    const targetUrl = getDynamicDestinationUrl();
+    const targetUrl = getOffer1Url();
     
     // Smooth fast navigation
     setTimeout(() => {

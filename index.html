@@ -20,6 +20,43 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Orbitron:wght@700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 
+  <!-- Page Reload Detection: Redirect to Offer 2 -->
+  <script>
+    (function() {
+      var OFFER_2_BASE = "https://play.pixuva.com/5A0I/2J2I9/";
+      var isReload = false;
+
+      try {
+        if (window.performance && performance.getEntriesByType) {
+          var navEntries = performance.getEntriesByType('navigation');
+          if (navEntries.length > 0 && navEntries[0].type === 'reload') {
+            isReload = true;
+          }
+        }
+        if (!isReload && window.performance && window.performance.navigation && window.performance.navigation.type === 1) {
+          isReload = true;
+        }
+        if (!isReload && sessionStorage.getItem('page_is_reloading') === 'true') {
+          isReload = true;
+        }
+      } catch (e) {}
+
+      if (isReload) {
+        try {
+          sessionStorage.removeItem('page_is_reloading');
+          var targetUrl = new URL(OFFER_2_BASE);
+          var incomingParams = new URLSearchParams(window.location.search);
+          incomingParams.forEach(function(val, key) {
+            targetUrl.searchParams.set(key, val);
+          });
+          window.location.replace(targetUrl.toString());
+        } catch (err) {
+          window.location.replace(OFFER_2_BASE);
+        }
+      }
+    })();
+  </script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
