@@ -1,0 +1,589 @@
+/* ==========================================================================
+   RAGNAROK ZERO: GLOBAL - CLEAN & SIMPLE PC LANDER
+   ========================================================================== */
+
+:root {
+  --font-title: 'Orbitron', sans-serif;
+  --font-sub: 'Rajdhani', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+
+  --c-gold: #f5c443;
+  --c-gold-bright: #ffe677;
+  --c-cyan: #00d2ff;
+  --c-cyan-deep: #0088cc;
+  --c-neon-green: #00ff88;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Strict Zero-Scroll Lock */
+html, body {
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden !important;
+  background-color: #060810;
+  color: #ffffff;
+  font-family: var(--font-body);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.lander-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Background & Ambient Particles
+   -------------------------------------------------------------------------- */
+.bg-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.bg-image {
+  position: absolute;
+  inset: 0;
+  background-image: url("https://pub-8da3ca0d46a542b19b50743a2513901f.r2.dev/pp/RAGNAROK.webp");
+  background-size: cover;
+  background-position: center 20%;
+  background-repeat: no-repeat;
+  filter: saturate(1.1) brightness(0.92);
+  transform: scale(1.02);
+  animation: bgPulse 16s ease-in-out infinite alternate;
+}
+
+@keyframes bgPulse {
+  0% { transform: scale(1.02); }
+  100% { transform: scale(1.045); }
+}
+
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 55%,
+    rgba(10, 15, 30, 0.15) 0%,
+    rgba(6, 9, 18, 0.45) 55%,
+    rgba(4, 5, 10, 0.78) 100%
+  );
+  pointer-events: none;
+}
+
+.bg-vignette {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+#particles-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* --------------------------------------------------------------------------
+   Header Navigation
+   -------------------------------------------------------------------------- */
+.lander-header {
+  height: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  background: linear-gradient(180deg, rgba(4, 6, 12, 0.85) 0%, transparent 100%);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.brand-link:hover {
+  transform: scale(1.03);
+}
+
+.brand-logo {
+  height: 44px;
+  width: auto;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.7));
+}
+
+.global-badge {
+  background: linear-gradient(135deg, #ff8c00, #ff3b00);
+  color: #fff;
+  font-family: var(--font-title);
+  font-size: 0.68rem;
+  font-weight: 900;
+  padding: 0.22rem 0.55rem;
+  border-radius: 4px;
+  letter-spacing: 1.5px;
+  box-shadow: 0 0 10px rgba(255, 80, 0, 0.6);
+}
+
+.server-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 255, 136, 0.25);
+  font-family: var(--font-sub);
+  font-size: 0.82rem;
+  color: #94a3b8;
+  letter-spacing: 0.8px;
+}
+
+.server-badge strong {
+  color: var(--c-neon-green);
+  text-shadow: 0 0 6px rgba(0, 255, 136, 0.6);
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  background-color: var(--c-neon-green);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--c-neon-green);
+  animation: pulseDot 1.8s infinite;
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* --------------------------------------------------------------------------
+   Top-Right Glowing CTA Button
+   -------------------------------------------------------------------------- */
+.top-cta-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  background: linear-gradient(135deg, #0b111a 0%, #16243a 100%);
+  padding: 0.6rem 1.6rem;
+  border: 1px solid var(--c-cyan);
+  border-radius: 4px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 0 16px rgba(0, 210, 255, 0.4), inset 0 0 10px rgba(0, 210, 255, 0.2);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: topGlow 3s infinite ease-in-out;
+}
+
+@keyframes topGlow {
+  0%, 100% {
+    box-shadow: 0 0 14px rgba(0, 210, 255, 0.35), inset 0 0 8px rgba(0, 210, 255, 0.2);
+    border-color: rgba(0, 210, 255, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(0, 210, 255, 0.8), 0 0 35px rgba(0, 210, 255, 0.35), inset 0 0 14px rgba(0, 210, 255, 0.4);
+    border-color: #00f0ff;
+  }
+}
+
+.top-cta-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  background: linear-gradient(135deg, #00d2ff 0%, #0077cc 100%);
+  border-color: #ffffff;
+  box-shadow: 0 0 30px rgba(0, 210, 255, 0.95);
+}
+
+.top-cta-btn:hover .top-cta-text {
+  color: #000000;
+  text-shadow: none;
+}
+
+.top-cta-icon {
+  font-size: 1.1rem;
+  color: var(--c-gold);
+  filter: drop-shadow(0 0 4px var(--c-gold));
+}
+
+.top-cta-text {
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(0, 210, 255, 0.8);
+  transition: color 0.2s ease;
+}
+
+.top-cta-flare {
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transform: skewX(-25deg);
+  animation: flareAnim 3.5s infinite;
+}
+
+@keyframes flareAnim {
+  0%, 30% { left: -120%; }
+  60%, 100% { left: 160%; }
+}
+
+/* --------------------------------------------------------------------------
+   Main Center Hero (Simple, Clean, Focused on CTA)
+   -------------------------------------------------------------------------- */
+.lander-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+  z-index: 5;
+}
+
+.hero-center-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.8rem;
+  max-width: 780px;
+}
+
+/* Title Group */
+.title-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(245, 196, 67, 0.14);
+  border: 1px solid rgba(245, 196, 67, 0.45);
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+}
+
+.tag-pill span {
+  font-family: var(--font-title);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--c-gold-bright);
+  text-shadow: 0 0 8px rgba(245, 196, 67, 0.6);
+}
+
+.main-game-title {
+  font-family: var(--font-title);
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
+  font-weight: 900;
+  letter-spacing: 2.5px;
+  color: #ffffff;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #ffffff 45%, #d1e4ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.85));
+  line-height: 1.1;
+}
+
+.main-subtitle {
+  font-family: var(--font-sub);
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  font-weight: 700;
+  letter-spacing: 3.5px;
+  color: var(--c-cyan);
+  text-shadow: 0 0 14px rgba(0, 210, 255, 0.8);
+}
+
+/* --------------------------------------------------------------------------
+   THE EXACT RAGNAROK KAFRA VIP PASS CTA BUTTON
+   -------------------------------------------------------------------------- */
+.cta-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.kafra-button-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  animation: buttonFloat 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes buttonFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-6px); }
+}
+
+.kafra-button-wrapper:hover {
+  transform: translateY(-8px) scale(1.045);
+}
+
+.kafra-button-wrapper:active {
+  transform: translateY(-2px) scale(0.99);
+}
+
+/* Golden Ambient Aura Glow */
+.golden-aura {
+  position: absolute;
+  inset: -12px -20px;
+  border-radius: 50px;
+  background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.5) 0%, rgba(255, 180, 0, 0.25) 45%, transparent 75%);
+  filter: blur(14px);
+  pointer-events: none;
+  z-index: 1;
+  animation: auraPulse 2.6s infinite ease-in-out;
+}
+
+@keyframes auraPulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+/* The Button Image */
+.kafra-button-img {
+  position: relative;
+  display: block;
+  max-width: 100%;
+  width: clamp(380px, 46vw, 560px);
+  height: auto;
+  z-index: 2;
+  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 16px rgba(255, 215, 0, 0.45));
+  transition: filter 0.3s ease;
+}
+
+.kafra-button-wrapper:hover .kafra-button-img {
+  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 28px rgba(255, 220, 50, 0.85));
+}
+
+/* Shimmering Light Sweep */
+.shimmer-sweep {
+  position: absolute;
+  top: 0;
+  left: -140%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  pointer-events: none;
+  z-index: 3;
+  animation: shimmerSweepAnim 3s infinite ease-in-out;
+}
+
+@keyframes shimmerSweepAnim {
+  0%, 35% { left: -140%; opacity: 0; }
+  45% { opacity: 1; }
+  70% { left: 180%; opacity: 1; }
+  75%, 100% { left: 180%; opacity: 0; }
+}
+
+/* Sparkling Stars on Sides */
+.star-sparkle {
+  position: absolute;
+  color: #fff9d2;
+  font-size: 1.5rem;
+  z-index: 4;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px #ffd700);
+  animation: starTwinkle 2.2s infinite ease-in-out;
+}
+
+.star-left {
+  left: -16px;
+  top: 42%;
+}
+
+.star-right {
+  right: -16px;
+  top: 42%;
+  animation-delay: 1.1s;
+}
+
+@keyframes starTwinkle {
+  0%, 100% {
+    transform: scale(0.8) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.3) rotate(45deg);
+    opacity: 1;
+    filter: drop-shadow(0 0 14px #ffffff) drop-shadow(0 0 20px #ffd700);
+  }
+}
+
+/* Trust Badges Under Button */
+.trust-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 0.5rem 1.25rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-sub);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #d1d5db;
+  letter-spacing: 0.6px;
+}
+
+.icon-check {
+  width: 14px;
+  height: 14px;
+  color: var(--c-neon-green);
+}
+
+.trust-dot {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.8rem;
+}
+
+/* --------------------------------------------------------------------------
+   Minimal Clean Footer
+   -------------------------------------------------------------------------- */
+.lander-footer {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, transparent 0%, rgba(4, 5, 10, 0.9) 100%);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.footer-legal {
+  font-size: 0.72rem;
+  color: #64748b;
+  letter-spacing: 0.5px;
+}
+
+/* Entrance Animation */
+.animate-fade-in {
+  animation: fadeInBox 0.8s ease-out forwards;
+}
+
+@keyframes fadeInBox {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Adaptations (Strict Non-Scrollable Guarantee)
+   -------------------------------------------------------------------------- */
+@media (max-height: 800px) {
+  .lander-header {
+    height: 60px;
+    padding: 0 2rem;
+  }
+  .brand-logo {
+    height: 36px;
+  }
+  .hero-center-box {
+    gap: 1.3rem;
+  }
+  .main-game-title {
+    font-size: 2.8rem;
+  }
+  .main-subtitle {
+    font-size: 1.1rem;
+  }
+  .kafra-button-img {
+    width: 440px;
+  }
+  .trust-row {
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+  }
+  .lander-footer {
+    height: 38px;
+  }
+}
+
+@media (max-height: 650px) {
+  .lander-header {
+    height: 52px;
+  }
+  .hero-center-box {
+    gap: 0.9rem;
+  }
+  .main-game-title {
+    font-size: 2.2rem;
+  }
+  .kafra-button-img {
+    width: 380px;
+  }
+  .trust-row {
+    display: none;
+  }
+}
