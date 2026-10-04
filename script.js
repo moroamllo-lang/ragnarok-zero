@@ -1,6 +1,6 @@
 /**
  * WHERE WINDS MEET: HIDDEN MOUNTAIN - GAMING PRELANDER SCRIPT
- * Target Domain: https://ml.pixuva.com/
+ * Target Domain: https://wwm.pixuva.com/ (also supports https://ml.pixuva.com/)
  * 
  * CTA Behavior:
  * 1. Capture incoming Adsterra click ID (`subid` parameter from URL).
