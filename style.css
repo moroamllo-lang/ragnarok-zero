@@ -1,17 +1,29 @@
 /* ==========================================================================
-   RAGNAROK ZERO: GLOBAL - CLEAN & SIMPLE PC LANDER
+   WHERE WINDS MEET: HIDDEN MOUNTAIN - GAMING PRELANDER STYLES
    ========================================================================== */
 
 :root {
-  --font-title: 'Orbitron', sans-serif;
-  --font-sub: 'Rajdhani', sans-serif;
-  --font-body: 'Montserrat', sans-serif;
+  --font-display: 'Cinzel', serif;
+  --font-ui: 'Montserrat', sans-serif;
 
-  --c-gold: #f5c443;
-  --c-gold-bright: #ffe677;
-  --c-cyan: #00d2ff;
-  --c-cyan-deep: #0088cc;
-  --c-neon-green: #00ff88;
+  /* Color Palette */
+  --c-bg: #06090e;
+  --c-text-primary: #f8fafc;
+  --c-text-secondary: #94a3b8;
+  --c-text-muted: #64748b;
+
+  /* Wuxia & Game Aesthetics */
+  --c-gold: #d4a359;
+  --c-gold-bright: #f3c77c;
+  --c-gold-deep: #9d712f;
+  --c-jade: #26d07c;
+  --c-cyan: #3ce6c4;
+  --c-teal-glow: rgba(60, 230, 196, 0.25);
+
+  /* Steam Branding */
+  --c-steam-dark: #171a21;
+  --c-steam-blue: #1b2838;
+  --c-steam-light: #66c0f4;
 }
 
 *, *::before, *::after {
@@ -22,26 +34,21 @@
   -webkit-user-select: none;
 }
 
-/* Strict Zero-Scroll Lock */
+/* Strict Zero-Scroll Lock for Desktop */
 html, body {
   width: 100vw;
   height: 100vh;
   min-height: 100vh;
-  max-height: 100vh;
-  overflow: hidden !important;
-  background-color: #060810;
-  color: #ffffff;
-  font-family: var(--font-body);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  overflow: hidden;
+  background-color: var(--c-bg);
+  color: var(--c-text-primary);
+  font-family: var(--font-ui);
 }
 
 .lander-viewport {
   position: relative;
   width: 100vw;
+  min-height: 100vh;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -51,10 +58,10 @@ html, body {
 }
 
 /* --------------------------------------------------------------------------
-   Background & Ambient Particles
+   Background Artwork & Ambient Effects
    -------------------------------------------------------------------------- */
 .bg-wrapper {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: -1;
   overflow: hidden;
@@ -62,29 +69,33 @@ html, body {
 
 .bg-image {
   position: absolute;
-  inset: 0;
-  background-image: url("https://pub-8da3ca0d46a542b19b50743a2513901f.r2.dev/pp/RAGNAROK.webp");
+  inset: -15px;
+  background-image: url("hero_clean.webp"), url("hero_clean.jpg");
   background-size: cover;
-  background-position: center 20%;
+  background-position: 75% center;
   background-repeat: no-repeat;
-  filter: saturate(1.1) brightness(0.92);
+  filter: saturate(1.08) brightness(0.92) contrast(1.04);
   transform: scale(1.02);
-  animation: bgPulse 16s ease-in-out infinite alternate;
+  animation: bgSubtleDrift 24s ease-in-out infinite alternate;
 }
 
-@keyframes bgPulse {
-  0% { transform: scale(1.02); }
-  100% { transform: scale(1.045); }
+@keyframes bgSubtleDrift {
+  0% { transform: scale(1.02) translate(0, 0); }
+  50% { transform: scale(1.045) translate(-6px, -3px); }
+  100% { transform: scale(1.03) translate(4px, 2px); }
 }
 
+/* Cinematic Desktop & Mobile Gradients */
 .bg-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    circle at 50% 55%,
-    rgba(10, 15, 30, 0.15) 0%,
-    rgba(6, 9, 18, 0.45) 55%,
-    rgba(4, 5, 10, 0.78) 100%
+  background: linear-gradient(
+    90deg,
+    rgba(6, 9, 14, 0.96) 0%,
+    rgba(6, 9, 14, 0.88) 32%,
+    rgba(6, 9, 14, 0.55) 55%,
+    rgba(6, 9, 14, 0.25) 80%,
+    rgba(6, 9, 14, 0.15) 100%
   );
   pointer-events: none;
 }
@@ -92,7 +103,12 @@ html, body {
 .bg-vignette {
   position: absolute;
   inset: 0;
-  box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.8);
+  background: radial-gradient(
+    circle at 75% 45%,
+    transparent 45%,
+    rgba(4, 6, 10, 0.5) 75%,
+    rgba(3, 4, 7, 0.85) 100%
+  );
   pointer-events: none;
 }
 
@@ -109,409 +125,611 @@ html, body {
    Header Navigation
    -------------------------------------------------------------------------- */
 .lander-header {
-  height: 74px;
+  height: 66px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 3rem;
-  background: linear-gradient(180deg, rgba(4, 6, 12, 0.85) 0%, transparent 100%);
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+  background: linear-gradient(180deg, rgba(6, 9, 14, 0.85) 0%, transparent 100%);
   z-index: 10;
   flex-shrink: 0;
 }
 
-.header-left {
+.header-brand {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 0.65rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.12em;
 }
 
-.brand-link {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  text-decoration: none;
-  transition: transform 0.2s ease;
-}
-
-.brand-link:hover {
-  transform: scale(1.03);
-}
-
-.brand-logo {
-  height: 44px;
-  width: auto;
-  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.7));
-}
-
-.global-badge {
-  background: linear-gradient(135deg, #ff8c00, #ff3b00);
+.game-logo-text {
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  font-weight: 800;
   color: #fff;
-  font-family: var(--font-title);
-  font-size: 0.68rem;
-  font-weight: 900;
-  padding: 0.22rem 0.55rem;
-  border-radius: 4px;
-  letter-spacing: 1.5px;
-  box-shadow: 0 0 10px rgba(255, 80, 0, 0.6);
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
 }
 
-.server-badge {
+.header-divider {
+  color: var(--c-gold);
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+.header-chapter {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--c-gold);
+  letter-spacing: 0.18em;
+  background: rgba(212, 163, 89, 0.12);
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 1px solid rgba(212, 163, 89, 0.25);
+}
+
+.header-status {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 0.35rem 0.85rem;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(38, 208, 124, 0.28);
+  padding: 5px 12px;
   border-radius: 20px;
-  border: 1px solid rgba(0, 255, 136, 0.25);
-  font-family: var(--font-sub);
-  font-size: 0.82rem;
-  color: #94a3b8;
-  letter-spacing: 0.8px;
+  backdrop-filter: blur(8px);
 }
 
-.server-badge strong {
-  color: var(--c-neon-green);
-  text-shadow: 0 0 6px rgba(0, 255, 136, 0.6);
-}
-
-.pulse-dot {
+.live-dot {
   width: 7px;
   height: 7px;
-  background-color: var(--c-neon-green);
+  background-color: var(--c-jade);
   border-radius: 50%;
-  box-shadow: 0 0 6px var(--c-neon-green);
-  animation: pulseDot 1.8s infinite;
+  box-shadow: 0 0 8px var(--c-jade);
+  animation: pulseDot 2s infinite ease-in-out;
 }
 
 @keyframes pulseDot {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.35); opacity: 0.7; }
-  100% { transform: scale(1); opacity: 1; }
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.65; }
+}
+
+.status-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #e2e8f0;
 }
 
 /* --------------------------------------------------------------------------
-   Top-Right Glowing CTA Button
-   -------------------------------------------------------------------------- */
-.top-cta-btn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-  background: linear-gradient(135deg, #0b111a 0%, #16243a 100%);
-  padding: 0.6rem 1.6rem;
-  border: 1px solid var(--c-cyan);
-  border-radius: 4px;
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow: 0 0 16px rgba(0, 210, 255, 0.4), inset 0 0 10px rgba(0, 210, 255, 0.2);
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  animation: topGlow 3s infinite ease-in-out;
-}
-
-@keyframes topGlow {
-  0%, 100% {
-    box-shadow: 0 0 14px rgba(0, 210, 255, 0.35), inset 0 0 8px rgba(0, 210, 255, 0.2);
-    border-color: rgba(0, 210, 255, 0.6);
-  }
-  50% {
-    box-shadow: 0 0 24px rgba(0, 210, 255, 0.8), 0 0 35px rgba(0, 210, 255, 0.35), inset 0 0 14px rgba(0, 210, 255, 0.4);
-    border-color: #00f0ff;
-  }
-}
-
-.top-cta-btn:hover {
-  transform: translateY(-2px) scale(1.04);
-  background: linear-gradient(135deg, #00d2ff 0%, #0077cc 100%);
-  border-color: #ffffff;
-  box-shadow: 0 0 30px rgba(0, 210, 255, 0.95);
-}
-
-.top-cta-btn:hover .top-cta-text {
-  color: #000000;
-  text-shadow: none;
-}
-
-.top-cta-icon {
-  font-size: 1.1rem;
-  color: var(--c-gold);
-  filter: drop-shadow(0 0 4px var(--c-gold));
-}
-
-.top-cta-text {
-  font-family: var(--font-title);
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  color: #ffffff;
-  text-shadow: 0 0 8px rgba(0, 210, 255, 0.8);
-  transition: color 0.2s ease;
-}
-
-.top-cta-flare {
-  position: absolute;
-  top: 0;
-  left: -120%;
-  width: 80%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-  transform: skewX(-25deg);
-  animation: flareAnim 3.5s infinite;
-}
-
-@keyframes flareAnim {
-  0%, 30% { left: -120%; }
-  60%, 100% { left: 160%; }
-}
-
-/* --------------------------------------------------------------------------
-   Main Center Hero (Simple, Clean, Focused on CTA)
+   Hero Section Above The Fold: 2-Column Split
    -------------------------------------------------------------------------- */
 .lander-main {
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0 2rem;
+  padding: 0 clamp(1.5rem, 4vw, 4.5rem);
   z-index: 5;
 }
 
-.hero-center-box {
+.hero-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  text-align: center;
-  gap: 1.8rem;
-  max-width: 780px;
+  justify-content: space-between;
+  gap: clamp(2.5rem, 4.5vw, 5rem);
+  width: 100%;
+  max-width: 1480px;
+  margin: 0 auto;
 }
 
-/* Title Group */
-.title-group {
+.hero-content {
+  flex: 1 1 580px;
+  max-width: 660px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
+  align-items: flex-start;
+  text-align: left;
 }
 
-.tag-pill {
+.animate-fade-in {
+  animation: heroEntrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in-delayed {
+  animation: heroEntrance 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+@keyframes heroEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Eyebrow */
+.hero-eyebrow {
   display: inline-flex;
   align-items: center;
-  background: rgba(245, 196, 67, 0.14);
-  border: 1px solid rgba(245, 196, 67, 0.45);
-  padding: 0.35rem 1rem;
-  border-radius: 20px;
-  backdrop-filter: blur(8px);
+  gap: 0.85rem;
+  margin-bottom: 1.2rem;
 }
 
-.tag-pill span {
-  font-family: var(--font-title);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: var(--c-gold-bright);
-  text-shadow: 0 0 8px rgba(245, 196, 67, 0.6);
+.eyebrow-line {
+  display: inline-block;
+  width: 32px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--c-gold), transparent);
 }
 
-.main-game-title {
-  font-family: var(--font-title);
-  font-size: clamp(2.6rem, 5vw, 4.2rem);
-  font-weight: 900;
-  letter-spacing: 2.5px;
-  color: #ffffff;
-  text-transform: uppercase;
-  background: linear-gradient(180deg, #ffffff 45%, #d1e4ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.85));
-  line-height: 1.1;
+.hero-eyebrow .eyebrow-line:last-child {
+  background: linear-gradient(270deg, var(--c-gold), transparent);
 }
 
-.main-subtitle {
-  font-family: var(--font-sub);
-  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+.eyebrow-text {
+  font-size: clamp(0.78rem, 0.95vw, 0.92rem);
   font-weight: 700;
-  letter-spacing: 3.5px;
-  color: var(--c-cyan);
-  text-shadow: 0 0 14px rgba(0, 210, 255, 0.8);
+  letter-spacing: 0.22em;
+  color: var(--c-gold-bright);
+  text-shadow: 0 0 12px rgba(212, 163, 89, 0.45);
+}
+
+/* Main Curiosity-Driven Headline */
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(2.7rem, 4.6vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+  text-shadow: 
+    0 4px 22px rgba(0, 0, 0, 0.88),
+    0 0 45px rgba(60, 230, 196, 0.22);
+}
+
+/* Supporting Text */
+.hero-subtext {
+  font-size: clamp(1.05rem, 1.3vw, 1.24rem);
+  font-weight: 500;
+  line-height: 1.62;
+  color: #cbd5e1;
+  margin-bottom: 2.2rem;
+  max-width: 580px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+}
+
+.highlight-title {
+  color: #ffffff;
+  font-weight: 700;
+  border-bottom: 1.5px solid var(--c-cyan);
+  padding-bottom: 1px;
 }
 
 /* --------------------------------------------------------------------------
-   THE EXACT RAGNAROK KAFRA VIP PASS CTA BUTTON
+   Steam CTA Button & Visual Cues
    -------------------------------------------------------------------------- */
-.cta-container {
+.cta-section {
   position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0.5rem;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
 }
 
-.kafra-button-wrapper {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  animation: buttonFloat 3.2s ease-in-out infinite alternate;
-}
-
-@keyframes buttonFloat {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-6px); }
-}
-
-.kafra-button-wrapper:hover {
-  transform: translateY(-8px) scale(1.045);
-}
-
-.kafra-button-wrapper:active {
-  transform: translateY(-2px) scale(0.99);
-}
-
-/* Golden Ambient Aura Glow */
-.golden-aura {
+/* Ambient Pulsing Glow behind CTA */
+.cta-glow-aura {
   position: absolute;
-  inset: -12px -20px;
-  border-radius: 50px;
-  background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.5) 0%, rgba(255, 180, 0, 0.25) 45%, transparent 75%);
+  top: -10px;
+  left: -10px;
+  width: calc(100% + 20px);
+  max-width: 440px;
+  height: 88px;
+  border-radius: 10px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(212, 163, 89, 0.4) 0%,
+    rgba(60, 230, 196, 0.24) 45%,
+    transparent 75%
+  );
   filter: blur(14px);
   pointer-events: none;
+  animation: glowPulse 3.5s ease-in-out infinite alternate;
   z-index: 1;
-  animation: auraPulse 2.6s infinite ease-in-out;
 }
 
-@keyframes auraPulse {
-  0%, 100% {
-    opacity: 0.7;
+@keyframes glowPulse {
+  0% {
+    opacity: 0.55;
     transform: scale(0.98);
   }
-  50% {
+  100% {
     opacity: 1;
     transform: scale(1.03);
   }
 }
 
-/* The Button Image */
-.kafra-button-img {
+/* Steam-Styled CTA Button */
+.steam-cta-btn {
   position: relative;
-  display: block;
-  max-width: 100%;
-  width: clamp(380px, 46vw, 560px);
-  height: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  min-width: 330px;
+  height: 68px;
+  padding: 0 2.6rem;
+  text-decoration: none;
+  border-radius: 8px;
   z-index: 2;
-  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 16px rgba(255, 215, 0, 0.45));
-  transition: filter 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+
+  /* Rich Bronze / Gold plate matching official screenshot with Steam highlights */
+  background: linear-gradient(
+    135deg,
+    #bd9342 0%,
+    #dfb45e 40%,
+    #d1a348 70%,
+    #a87c32 100%
+  );
+  border: 1px solid rgba(255, 235, 175, 0.65);
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.65),
+    0 2px 12px rgba(212, 163, 89, 0.45),
+    inset 0 1px 2px rgba(255, 255, 255, 0.7),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.22s ease,
+              filter 0.22s ease;
 }
 
-.kafra-button-wrapper:hover .kafra-button-img {
-  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 28px rgba(255, 220, 50, 0.85));
+.steam-cta-btn:hover {
+  transform: translateY(-3px) scale(1.025);
+  filter: brightness(1.08);
+  box-shadow: 
+    0 16px 40px rgba(0, 0, 0, 0.75),
+    0 4px 20px rgba(212, 163, 89, 0.65),
+    0 0 30px rgba(60, 230, 196, 0.45),
+    inset 0 1px 2px rgba(255, 255, 255, 0.85);
 }
 
-/* Shimmering Light Sweep */
+.steam-cta-btn:active {
+  transform: translateY(1px) scale(0.99);
+  filter: brightness(0.97);
+  box-shadow: 
+    0 6px 16px rgba(0, 0, 0, 0.6),
+    inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Official Steam Icon */
+.steam-icon {
+  color: #ffffff;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.steam-cta-btn:hover .steam-icon {
+  transform: scale(1.08) rotate(-4deg);
+}
+
+/* CTA Label */
+.cta-label {
+  font-family: var(--font-ui);
+  font-size: 1.22rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  color: #ffffff;
+  text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.75);
+}
+
+/* Arrow indicator */
+.cta-arrow-icon {
+  color: #ffffff;
+  opacity: 0.85;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.steam-cta-btn:hover .cta-arrow-icon {
+  transform: translateX(4px);
+  opacity: 1;
+}
+
+/* Subtle Shimmer Sweep Animation */
 .shimmer-sweep {
   position: absolute;
   top: 0;
-  left: -140%;
-  width: 50%;
+  left: -120%;
+  width: 80%;
   height: 100%;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 255, 255, 0.4) 50%,
     transparent 100%
   );
   transform: skewX(-25deg);
+  animation: sweepAnim 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
-  z-index: 3;
-  animation: shimmerSweepAnim 3s infinite ease-in-out;
 }
 
-@keyframes shimmerSweepAnim {
-  0%, 35% { left: -140%; opacity: 0; }
-  45% { opacity: 1; }
-  70% { left: 180%; opacity: 1; }
-  75%, 100% { left: 180%; opacity: 0; }
+@keyframes sweepAnim {
+  0% { left: -120%; }
+  35% { left: 160%; }
+  100% { left: 160%; }
 }
 
-/* Sparkling Stars on Sides */
-.star-sparkle {
-  position: absolute;
-  color: #fff9d2;
-  font-size: 1.5rem;
-  z-index: 4;
-  pointer-events: none;
-  filter: drop-shadow(0 0 8px #ffd700);
-  animation: starTwinkle 2.2s infinite ease-in-out;
-}
-
-.star-left {
-  left: -16px;
-  top: 42%;
-}
-
-.star-right {
-  right: -16px;
-  top: 42%;
-  animation-delay: 1.1s;
-}
-
-@keyframes starTwinkle {
-  0%, 100% {
-    transform: scale(0.8) rotate(0deg);
-    opacity: 0.6;
-  }
-  50% {
-    transform: scale(1.3) rotate(45deg);
-    opacity: 1;
-    filter: drop-shadow(0 0 14px #ffffff) drop-shadow(0 0 20px #ffd700);
-  }
-}
-
-/* Trust Badges Under Button */
-.trust-row {
+/* Secondary Micro-Copy */
+.cta-microcopy {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #cbd5e1;
+  margin-top: 0.95rem;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  background: rgba(0, 0, 0, 0.45);
-  padding: 0.5rem 1.25rem;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
+  gap: 0.4rem;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
 }
 
-.trust-item {
+/* Truthful Supporting Note under CTA */
+.cta-supporting-note {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--c-text-muted);
+  margin-top: 0.5rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-sub);
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #d1d5db;
-  letter-spacing: 0.6px;
+  gap: 0.45rem;
+  letter-spacing: 0.02em;
 }
 
-.icon-check {
-  width: 14px;
-  height: 14px;
-  color: var(--c-neon-green);
-}
-
-.trust-dot {
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 0.8rem;
+.note-shield-icon {
+  color: var(--c-jade);
+  flex-shrink: 0;
 }
 
 /* --------------------------------------------------------------------------
-   Minimal Clean Footer
+   RIGHT COLUMN: Organic 9:16 Vertical Gaming Reel Video
+   -------------------------------------------------------------------------- */
+.hero-reel-wrapper {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 6;
+}
+
+.reel-card {
+  position: relative;
+  width: clamp(340px, 24vw, 420px);
+  aspect-ratio: 9 / 16;
+  max-height: min(720px, calc(100vh - 130px));
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #04060a;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.85),
+    0 0 35px rgba(38, 208, 124, 0.22),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.35s ease;
+}
+
+.reel-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 30px 70px rgba(0, 0, 0, 0.92),
+    0 0 45px rgba(60, 230, 196, 0.35),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+/* Video element */
+.reel-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background-color: #000;
+}
+
+/* Reel Top Bar */
+.reel-top-bar {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.reel-live-pill {
+  background: rgba(10, 15, 24, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+}
+
+.reel-dot {
+  width: 7px;
+  height: 7px;
+  background-color: var(--c-jade);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--c-jade);
+  animation: pulseDot 1.8s infinite ease-in-out;
+}
+
+/* Sound Toggle Button */
+.reel-audio-btn {
+  pointer-events: auto;
+  background: rgba(10, 15, 24, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.reel-audio-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.12);
+}
+
+.audio-icon {
+  pointer-events: none;
+}
+
+/* Reel Right Action Rail */
+.reel-actions-rail {
+  position: absolute;
+  right: 12px;
+  bottom: 95px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.reel-action-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: #ffffff;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.85));
+}
+
+.reel-action-icon {
+  opacity: 0.95;
+}
+
+.reel-action-count {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #f1f5f9;
+}
+
+/* Reel Bottom Overlay */
+.reel-bottom-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 40px 14px 12px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.6) 45%,
+    transparent 100%
+  );
+  z-index: 5;
+  pointer-events: none;
+}
+
+.reel-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding-right: 44px; /* room for action rail */
+}
+
+.reel-author-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.reel-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  background: var(--c-cyan);
+  color: #06090e;
+  font-size: 0.62rem;
+  font-weight: 900;
+  border-radius: 50%;
+}
+
+.reel-author-name {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.reel-caption {
+  font-size: 0.78rem;
+  color: #e2e8f0;
+  line-height: 1.38;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95);
+}
+
+/* Thin Looping Progress Track */
+.reel-progress-track {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 2px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.reel-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--c-jade), var(--c-gold-bright));
+  transition: width 0.15s linear;
+}
+
+/* Mobile secondary CTA under video (hidden on desktop) */
+.mobile-reel-cta {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Minimalist Legal Footer
    -------------------------------------------------------------------------- */
 .lander-footer {
   height: 48px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, transparent 0%, rgba(4, 5, 10, 0.9) 100%);
+  justify-content: flex-start;
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+  background: linear-gradient(0deg, rgba(6, 9, 14, 0.92) 0%, transparent 100%);
   z-index: 10;
   flex-shrink: 0;
 }
@@ -519,71 +737,202 @@ html, body {
 .footer-legal {
   font-size: 0.72rem;
   color: #64748b;
-  letter-spacing: 0.5px;
-}
-
-/* Entrance Animation */
-.animate-fade-in {
-  animation: fadeInBox 0.8s ease-out forwards;
-}
-
-@keyframes fadeInBox {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  letter-spacing: 0.02em;
+  opacity: 0.85;
 }
 
 /* --------------------------------------------------------------------------
-   Responsive Adaptations (Strict Non-Scrollable Guarantee)
+   Responsive Design (Mobile & Tablet)
    -------------------------------------------------------------------------- */
-@media (max-height: 800px) {
+@media (max-width: 900px) {
+  /* Allow natural scrolling on mobile so video stacks cleanly */
+  html, body {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: auto !important;
+    min-height: 100vh;
+  }
+
+  .lander-viewport {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: visible;
+  }
+
+  .bg-wrapper {
+    position: fixed;
+  }
+
+  .bg-image {
+    background-position: 68% 15%;
+  }
+
+  .bg-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(6, 9, 14, 0.45) 0%,
+      rgba(6, 9, 14, 0.78) 25%,
+      rgba(6, 9, 14, 0.95) 55%,
+      rgba(6, 9, 14, 0.98) 100%
+    );
+  }
+
   .lander-header {
+    height: 58px;
+    padding: 0 1.25rem;
+  }
+
+  .header-chapter {
+    display: none;
+  }
+
+  .header-divider {
+    display: none;
+  }
+
+  .game-logo-text {
+    font-size: 0.95rem;
+  }
+
+  .status-label {
+    font-size: 0.65rem;
+  }
+
+  .lander-main {
+    padding: 1.5rem 1.25rem 2.5rem;
+    align-items: flex-start;
+  }
+
+  .hero-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 2.2rem;
+  }
+
+  .hero-content {
+    flex: initial;
+    max-width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    margin-bottom: 0.75rem;
+    justify-content: center;
+  }
+
+  .hero-headline {
+    font-size: 2.15rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .hero-subtext {
+    font-size: 0.95rem;
+    margin-bottom: 1.4rem;
+    max-width: 100%;
+  }
+
+  .cta-section {
+    align-items: center;
+  }
+
+  .cta-glow-aura {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+  }
+
+  .steam-cta-btn {
+    width: 100%;
+    max-width: 380px;
+    height: 64px;
+    padding: 0 1.8rem;
+  }
+
+  .cta-label {
+    font-size: 1.15rem;
+  }
+
+  .cta-microcopy {
+    justify-content: center;
+    font-size: 0.95rem;
+  }
+
+  .cta-supporting-note {
+    font-size: 0.76rem;
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* Reel stacked BELOW the hero & CTA on mobile */
+  .hero-reel-wrapper {
+    width: 100%;
+    max-width: 380px;
+    margin-top: 1rem;
+  }
+
+  .reel-card {
+    width: 100%;
+    max-width: 350px;
+    aspect-ratio: 9 / 16;
+    max-height: 620px;
+    border-radius: 20px;
+  }
+
+  /* Mobile secondary CTA button underneath the Reel */
+  .mobile-reel-cta {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  .mobile-sub-btn {
+    width: 100%;
+    max-width: 350px;
     height: 60px;
-    padding: 0 2rem;
-  }
-  .brand-logo {
-    height: 36px;
-  }
-  .hero-center-box {
-    gap: 1.3rem;
-  }
-  .main-game-title {
-    font-size: 2.8rem;
-  }
-  .main-subtitle {
     font-size: 1.1rem;
   }
-  .kafra-button-img {
-    width: 440px;
-  }
-  .trust-row {
-    padding: 0.4rem 1rem;
-    font-size: 0.75rem;
-  }
+
   .lander-footer {
-    height: 38px;
+    height: 48px;
+    padding: 0 1.25rem;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .footer-legal {
+    font-size: 0.65rem;
+    line-height: 1.3;
   }
 }
 
-@media (max-height: 650px) {
+/* Extra short landscape viewports */
+@media (max-height: 550px) and (min-width: 901px) {
   .lander-header {
-    height: 52px;
+    height: 48px;
   }
-  .hero-center-box {
-    gap: 0.9rem;
+
+  .hero-headline {
+    font-size: 1.85rem;
+    margin-bottom: 0.5rem;
   }
-  .main-game-title {
-    font-size: 2.2rem;
+
+  .hero-subtext {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
   }
-  .kafra-button-img {
-    width: 380px;
+
+  .steam-cta-btn {
+    height: 50px;
+    min-width: 240px;
   }
-  .trust-row {
-    display: none;
+
+  .reel-card {
+    max-height: calc(100vh - 120px);
+  }
+
+  .lander-footer {
+    height: 36px;
   }
 }

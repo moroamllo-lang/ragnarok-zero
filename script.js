@@ -1,123 +1,57 @@
 /**
- * RAGNAROK ZERO: GLOBAL - Non-Scrollable PC Lander Script
- * Handles:
- * 1. Tracking parameter mapping and URL resolution (PropellerAds / Ad Networks)
- * 2. CTA click triggers & navigation
- * 3. Gamer particle animation canvas (embers & magic dust)
- * 4. Audio tactile click feedback
+ * WHERE WINDS MEET: HIDDEN MOUNTAIN - GAMING PRELANDER SCRIPT
+ * Target Domain: https://ml.pixuva.com/
+ * 
+ * CTA Behavior:
+ * 1. Capture incoming Adsterra click ID (`subid` parameter from URL).
+ * 2. On CTA click:
+ *    - Open OFFER 1 in a NEW TAB with exact visitor_id = captured subid.
+ *    - Navigate CURRENT PRELANDER TAB to OFFER 2 (https://play.pixuva.com/5A0I/2J2F3/).
+ * 3. Tactile gamer Web Audio click feedback.
+ * 4. Ambient atmospheric canvas (Wuxia jade motes & rain mist).
+ * 5. Vertical Gaming Reel Video controls (Autoplay, Loop, Mute toggle, Progress bar).
  */
 
 (function () {
   'use strict';
 
-  // Offer 1: Destination when visitor clicks the CTA
-  const OFFER_1_BASE = "https://play.pixuva.com/5A0I/2J2I9/?source=prp&visitor_id=${SUBID}&cost={cost}&zoneid={zoneid}&campaignid={campaignid}&device={device}&browser={browser}&os={os}&osversion={osversion}&country={country}&language={language}&isp={isp}&user_activity={user_activity}&via={via}&campaign_id={campaignid}";
+  // OFFER 1 — PRIMARY CONVERSION OFFER TEMPLATE (Adsterra tracked offer)
+  const OFFER_1_TEMPLATE = "https://play.pixuva.com/5A0I/2J1J9/?source=adtr&visitor_id=##SUB_ID_SHORT(action)##&cost=##COST_CPC##&zoneid=##PLACEMENT_ID##&campaignid=##CAMPAIGN_ID##&device=##DEVICE_BRAND##&browser=##BROWSER_NAME##&os=##USER_OS##&language=##REMOTE_LANGUAGE##&isp=##USER_CARRIER##&useragent=##USERAGENT##&banner_id=##BANNER_ID##&campaign_id=##CAMPAIGN_ID##";
 
-  // Offer 2: Destination when visitor reloads the prelander page
-  const OFFER_2_BASE = "https://play.pixuva.com/5A0I/2J2I9/";
+  // OFFER 2 — CURRENT TAB DESTINATION
+  const OFFER_2_URL = "https://play.pixuva.com/5A0I/2J2F3/";
 
   let isCtaClicked = false;
 
   /**
-   * Build Offer 1 destination URL with dynamic tracking macros.
+   * Capture `subid` from incoming Adsterra URL query params.
+   * e.g., https://ml.pixuva.com/?subid=ABC123 -> "ABC123"
+   */
+  function getCapturedSubId() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('subid') || params.get('SUBID') || '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  /**
+   * Build Offer 1 destination URL.
+   * Replaces ##SUB_ID_SHORT(action)## with the exact captured Adsterra click ID.
+   * Preserves all other tracking parameters exactly as provided.
    */
   function getOffer1Url() {
-    try {
-      const incomingParams = new URLSearchParams(window.location.search);
-      let targetUrlStr = OFFER_1_BASE;
-
-      // Token mappings dictionary
-      const tokens = [
-        'cost', 'zoneid', 'campaignid', 'device', 'browser',
-        'os', 'osversion', 'country', 'language', 'isp',
-        'user_activity', 'via', 'campaign_id', 'visitor_id', 'SUBID'
-      ];
-
-      // Replace known macros if present in incoming query
-      tokens.forEach(token => {
-        const value = incomingParams.get(token) || 
-                      incomingParams.get(token.toLowerCase()) || 
-                      (token === 'SUBID' ? incomingParams.get('visitor_id') || incomingParams.get('subid') : null);
-        
-        if (value) {
-          // Replace ${token} first, then {token}
-          targetUrlStr = targetUrlStr.split('${' + token + '}').join(encodeURIComponent(value));
-          targetUrlStr = targetUrlStr.split('{' + token + '}').join(encodeURIComponent(value));
-        }
-      });
-
-      // Also append any extra incoming parameters that weren't in the template
-      const targetUrl = new URL(targetUrlStr);
-      incomingParams.forEach((val, key) => {
-        if (!targetUrl.searchParams.has(key)) {
-          targetUrl.searchParams.set(key, val);
-        }
-      });
-
-      return targetUrl.toString();
-    } catch (e) {
-      console.warn('Offer 1 URL parsing fallback:', e);
-      return OFFER_1_BASE;
+    const subId = getCapturedSubId();
+    if (subId) {
+      return OFFER_1_TEMPLATE.split('##SUB_ID_SHORT(action)##').join(encodeURIComponent(subId));
     }
+    return OFFER_1_TEMPLATE;
   }
 
   /**
-   * Build Offer 2 destination URL (preserving incoming query parameters for tracking).
+   * Audio click sound using Web Audio API for instantaneous gamer tactile response
    */
-  function getOffer2Url() {
-    try {
-      const targetUrl = new URL(OFFER_2_BASE);
-      const incomingParams = new URLSearchParams(window.location.search);
-      incomingParams.forEach((val, key) => {
-        targetUrl.searchParams.set(key, val);
-      });
-      return targetUrl.toString();
-    } catch (e) {
-      return OFFER_2_BASE;
-    }
-  }
-
-  /**
-   * Detect if the current page visit is a reload
-   */
-  function checkAndHandleReload() {
-    let isReload = false;
-    try {
-      if (window.performance && performance.getEntriesByType) {
-        const navEntries = performance.getEntriesByType('navigation');
-        if (navEntries.length > 0 && navEntries[0].type === 'reload') {
-          isReload = true;
-        }
-      }
-      if (!isReload && window.performance && window.performance.navigation && window.performance.navigation.type === 1) {
-        isReload = true;
-      }
-      if (!isReload && sessionStorage.getItem('page_is_reloading') === 'true') {
-        isReload = true;
-      }
-    } catch (e) {}
-
-    if (isReload) {
-      try {
-        sessionStorage.removeItem('page_is_reloading');
-      } catch (e) {}
-      window.location.replace(getOffer2Url());
-    }
-  }
-
-  // Check for reload immediately
-  checkAndHandleReload();
-
-  // Track unload to catch reloads across all browsers
-  window.addEventListener('beforeunload', () => {
-    if (!isCtaClicked) {
-      try {
-        sessionStorage.setItem('page_is_reloading', 'true');
-      } catch (e) {}
-    }
-  });
-
-  // Audio click sound using Web Audio API for instantaneous gamer tactile response
   function playClickSound() {
     try {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -127,8 +61,8 @@
       const gain = ctx.createGain();
 
       osc.type = 'triangle';
-      osc.frequency.setValueAtTime(620, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(240, ctx.currentTime + 0.12);
+      osc.frequency.setValueAtTime(540, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(220, ctx.currentTime + 0.12);
 
       gain.gain.setValueAtTime(0.18, ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
@@ -144,7 +78,12 @@
   }
 
   /**
-   * Handle CTA Navigation: Redirect to Offer 1
+   * Handle CTA Navigation:
+   * Action 1: Open OFFER 1 in a NEW TAB with exact visitor_id = captured subid.
+   * Action 2: Navigate CURRENT PRELANDER TAB to OFFER 2 (https://play.pixuva.com/5A0I/2J2F3/).
+   * 
+   * Calling window.open synchronously inside the genuine user click handler
+   * ensures the new tab is dispatched cleanly without triggering popup blockers.
    */
   function handleCtaClick(e) {
     if (e) {
@@ -152,34 +91,113 @@
       e.stopPropagation();
     }
 
+    if (isCtaClicked) return;
     isCtaClicked = true;
-    try {
-      sessionStorage.removeItem('page_is_reloading');
-    } catch (err) {}
 
     playClickSound();
 
-    const targetUrl = getOffer1Url();
-    
-    // Smooth fast navigation
-    setTimeout(() => {
-      window.location.href = targetUrl;
-    }, 120);
+    const offer1Url = getOffer1Url();
+    const offer2Url = OFFER_2_URL;
+
+    // 1. Open OFFER 1 in a NEW TAB directly inside the user click handler
+    const newTab = window.open(offer1Url, '_blank');
+    if (newTab) {
+      try {
+        newTab.focus();
+      } catch (err) {}
+    }
+
+    // 2. Navigate CURRENT PRELANDER TAB to OFFER 2
+    setTimeout(function () {
+      window.location.href = offer2Url;
+    }, 100);
   }
 
-  // Wire up all CTA triggers
+  /**
+   * Initialize Vertical Reel Video Functionality
+   */
+  function initReelVideo() {
+    const video = document.getElementById('heroReelVideo');
+    const audioBtn = document.getElementById('reelAudioBtn');
+    const progressBar = document.getElementById('reelProgressBar');
+    if (!video) return;
+
+    // Autoplay silently with fallback
+    video.muted = true;
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        console.log('Video autoplay prevented by browser policy; user interaction needed:', err);
+      });
+    }
+
+    // Audio toggle button
+    if (audioBtn) {
+      const mutedIcon = audioBtn.querySelector('.audio-muted');
+      const unmutedIcon = audioBtn.querySelector('.audio-unmuted');
+
+      audioBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (video.muted) {
+          video.muted = false;
+          if (mutedIcon) mutedIcon.style.display = 'none';
+          if (unmutedIcon) unmutedIcon.style.display = 'block';
+        } else {
+          video.muted = true;
+          if (mutedIcon) mutedIcon.style.display = 'block';
+          if (unmutedIcon) unmutedIcon.style.display = 'none';
+        }
+      });
+    }
+
+    // Time update for progress track
+    if (progressBar) {
+      video.addEventListener('timeupdate', () => {
+        if (video.duration) {
+          const pct = (video.currentTime / video.duration) * 100;
+          progressBar.style.width = pct + '%';
+        }
+      });
+    }
+
+    // Pause video when out of viewport to preserve device performance
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      }, { threshold: 0.25 });
+
+      observer.observe(video);
+    }
+  }
+
+  // Wire up all CTA triggers and initialize components on DOM load
   document.addEventListener('DOMContentLoaded', () => {
+    const offer1Url = getOffer1Url();
     const ctaTriggers = document.querySelectorAll('.cta-trigger');
+
     ctaTriggers.forEach(el => {
+      // Set href for progressive enhancement & inspection
+      el.setAttribute('href', offer1Url);
+      el.setAttribute('target', '_blank');
+      el.setAttribute('rel', 'noopener noreferrer');
       el.addEventListener('click', handleCtaClick);
     });
 
-    // Initialize the ambient particles
+    // Initialize atmospheric particles
     initParticles();
+
+    // Initialize vertical gaming reel
+    initReelVideo();
   });
 
   /**
-   * Ambient Floating Ember / Sparkle Particle Canvas
+   * Ambient Floating Wuxia Jade Particles & Rain Mist
    */
   function initParticles() {
     const canvas = document.getElementById('particles-canvas');
@@ -194,14 +212,16 @@
       height = canvas.height = window.innerHeight;
     });
 
-    const PARTICLE_COUNT = 45;
+    const isMobile = window.innerWidth < 640;
+    const PARTICLE_COUNT = isMobile ? 20 : 38;
     const particles = [];
 
+    // Palette: Ethereal jade green, mystical cyan, soft amber gold, crisp rain mist
     const colors = [
-      'rgba(0, 210, 255, ',    // Cyan glow
-      'rgba(245, 196, 67, ',    // Ragnarok gold
-      'rgba(255, 255, 255, ',   // Pure white sparkle
-      'rgba(0, 255, 170, '     // Magic teal
+      'rgba(38, 208, 124, ',   // Jade green
+      'rgba(60, 230, 196, ',   // Ethereal cyan
+      'rgba(212, 163, 89, ',   // Ancient gold
+      'rgba(255, 255, 255, '   // Mist / Rain droplet
     ];
 
     class Particle {
@@ -211,24 +231,23 @@
 
       reset(init = false) {
         this.x = Math.random() * width;
-        this.y = init ? Math.random() * height : height + 10;
-        this.size = Math.random() * 2.5 + 0.8;
-        this.speedY = -(Math.random() * 0.7 + 0.25);
-        this.speedX = (Math.random() - 0.5) * 0.45;
+        this.y = init ? Math.random() * height : height + 15;
+        this.size = Math.random() * 2.2 + 0.8;
+        this.speedY = -(Math.random() * 0.75 + 0.3);
+        this.speedX = (Math.random() * 0.6 - 0.2);
         this.colorPrefix = colors[Math.floor(Math.random() * colors.length)];
-        this.opacity = Math.random() * 0.6 + 0.2;
+        this.opacity = Math.random() * 0.55 + 0.15;
         this.maxOpacity = this.opacity;
-        this.fadeSpeed = Math.random() * 0.005 + 0.002;
         this.pulse = Math.random() * Math.PI;
       }
 
       update() {
         this.y += this.speedY;
         this.x += this.speedX;
-        this.pulse += 0.03;
-        this.opacity = Math.sin(this.pulse) * (this.maxOpacity * 0.5) + (this.maxOpacity * 0.5);
+        this.pulse += 0.025;
+        this.opacity = Math.sin(this.pulse) * (this.maxOpacity * 0.4) + (this.maxOpacity * 0.6);
 
-        if (this.y < -10 || this.x < -10 || this.x > width + 10) {
+        if (this.y < -15 || this.x < -20 || this.x > width + 20) {
           this.reset();
         }
       }
@@ -236,9 +255,9 @@
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.colorPrefix + Math.max(0.05, this.opacity) + ')';
-        ctx.shadowBlur = this.size * 5;
-        ctx.shadowColor = this.colorPrefix + '0.8)';
+        ctx.fillStyle = this.colorPrefix + Math.max(0.04, this.opacity) + ')';
+        ctx.shadowBlur = this.size * 4;
+        ctx.shadowColor = this.colorPrefix + '0.7)';
         ctx.fill();
       }
     }
@@ -247,16 +266,26 @@
       particles.push(new Particle());
     }
 
+    let animationFrameId;
     function animate() {
       ctx.clearRect(0, 0, width, height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animate);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+      }
+      animationFrameId = requestAnimationFrame(animate);
     }
 
     animate();
+
+    // Optimize performance when tab is inactive
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animationFrameId);
+      } else {
+        animate();
+      }
+    });
   }
 
 })();

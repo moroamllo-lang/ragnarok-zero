@@ -2,68 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>RAGNAROK ZERO: GLOBAL | Download for PC - Official Server</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Where Winds Meet | Hidden Mountain: Perilous Eminence - Play on Steam</title>
   
   <!-- Meta & OpenGraph -->
-  <meta name="description" content="Download Ragnarok Zero: Global for PC. Log In to Claim Kafra VIP Pass. Free to play MMORPG on Windows PC.">
-  <meta property="og:title" content="RAGNAROK ZERO: GLOBAL | Download for PC">
-  <meta property="og:description" content="Experience the legend reborn. Download free for PC and claim your Kafra VIP Pass!">
-  <meta property="og:image" content="https://pub-8da3ca0d46a542b19b50743a2513901f.r2.dev/pp/RAGNAROK.webp">
+  <meta name="description" content="Discover the latest chapter of Where Winds Meet: Hidden Mountain - Perilous Eminence. Play free on PC via Steam.">
+  <meta property="og:title" content="Where Winds Meet | Play on Steam">
+  <meta property="og:description" content="Discover the latest chapter and see what awaits in the world of Where Winds Meet. Available on Steam.">
+  <meta property="og:image" content="hero_clean.webp">
   <meta property="og:type" content="website">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/webp" href="https://img.gravity.co.kr/gravity/official_renewal/assets/images/game/roz/logo.webp">
+  <!-- Preload hero background image for instant LCP -->
+  <link rel="preload" as="image" href="hero_clean.webp" type="image/webp">
 
-  <!-- Fonts -->
+  <!-- Fonts: Cinzel for cinematic wuxia typography & Montserrat for crisp gaming UI -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Orbitron:wght@700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
-
-  <!-- Page Reload Detection: Redirect to Offer 2 -->
-  <script>
-    (function() {
-      var OFFER_2_BASE = "https://play.pixuva.com/5A0I/2J2I9/";
-      var isReload = false;
-
-      try {
-        if (window.performance && performance.getEntriesByType) {
-          var navEntries = performance.getEntriesByType('navigation');
-          if (navEntries.length > 0 && navEntries[0].type === 'reload') {
-            isReload = true;
-          }
-        }
-        if (!isReload && window.performance && window.performance.navigation && window.performance.navigation.type === 1) {
-          isReload = true;
-        }
-        if (!isReload && sessionStorage.getItem('page_is_reloading') === 'true') {
-          isReload = true;
-        }
-      } catch (e) {}
-
-      if (isReload) {
-        try {
-          sessionStorage.removeItem('page_is_reloading');
-          var targetUrl = new URL(OFFER_2_BASE);
-          var incomingParams = new URLSearchParams(window.location.search);
-          incomingParams.forEach(function(val, key) {
-            targetUrl.searchParams.set(key, val);
-          });
-          window.location.replace(targetUrl.toString());
-        } catch (err) {
-          window.location.replace(OFFER_2_BASE);
-        }
-      }
-    })();
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Strict Non-Scrollable Viewport (100vh / 100vw) -->
+  <!-- Main Lander Container -->
   <div class="lander-viewport">
     
-    <!-- Background Artwork & Ambient Effects -->
+    <!-- Background Cinematic Artwork & Ambient Storm Particle Layer -->
     <div class="bg-wrapper">
       <div class="bg-image"></div>
       <div class="bg-overlay"></div>
@@ -71,91 +34,175 @@
       <canvas id="particles-canvas"></canvas>
     </div>
 
-    <!-- Header Navigation -->
+    <!-- Header: Minimalist, clean PC gaming discovery bar -->
     <header class="lander-header">
-      <div class="header-left">
-        <a href="#" class="brand-link cta-trigger">
-          <img src="https://img.gravity.co.kr/gravity/official_renewal/assets/images/game/roz/logo.webp" alt="Ragnarok Zero Logo" class="brand-logo">
-          <span class="global-badge">GLOBAL</span>
-        </a>
-        <div class="server-badge">
-          <span class="pulse-dot"></span>
-          <span>PC SERVER: <strong>ONLINE</strong></span>
-        </div>
+      <div class="header-brand">
+        <span class="game-logo-text">WHERE WINDS MEET</span>
+        <span class="header-divider">/</span>
+        <span class="header-chapter">HIDDEN MOUNTAIN</span>
       </div>
 
-      <!-- Top-Right Glowing Gamer CTA -->
-      <div class="header-right">
-        <a href="#" class="top-cta-btn cta-trigger" id="topCtaBtn" title="Play Now">
-          <span class="top-cta-flare"></span>
-          <span class="top-cta-icon">⚡</span>
-          <span class="top-cta-text">PLAY NOW</span>
-        </a>
+      <div class="header-status">
+        <span class="live-dot"></span>
+        <span class="status-label">OFFICIAL STEAM RELEASE</span>
       </div>
     </header>
 
-    <!-- Main Center Hero (Clean, Simple, High-Impact Focus) -->
+    <!-- Main Hero: High-Converting Above-The-Fold Discovery Block with Split Reel -->
     <main class="lander-main">
-      <div class="hero-center-box animate-fade-in">
-        
-        <!-- Game Title & Tagline -->
-        <div class="title-group">
-          <div class="tag-pill">
-            <span>OFFICIAL GRAVITY PC MMORPG</span>
+      <div class="hero-container">
+
+        <!-- LEFT COLUMN: Headline, Curiosity Hook, and Steam CTA -->
+        <div class="hero-content animate-fade-in">
+          
+          <!-- Chapter Eyebrow -->
+          <div class="hero-eyebrow">
+            <span class="eyebrow-line"></span>
+            <span class="eyebrow-text">THE LATEST CHAPTER IS HERE</span>
+            <span class="eyebrow-line"></span>
           </div>
-          <h1 class="main-game-title">RAGNAROK ZERO</h1>
-          <p class="main-subtitle">GLOBAL EDITION • FREE TO PLAY</p>
+
+          <!-- Main Curiosity-Driven Headline -->
+          <h1 class="hero-headline">
+            How Is This Game Free?
+          </h1>
+
+          <!-- Supporting Text -->
+          <p class="hero-subtext">
+            Discover the latest chapter and see what awaits in the world of <strong class="highlight-title">Where Winds Meet</strong>.
+          </p>
+
+          <!-- Steam CTA Container -->
+          <div class="cta-section">
+            <!-- Subtle directional visual cue beacon -->
+            <div class="cta-glow-aura" aria-hidden="true"></div>
+
+            <a href="#" class="steam-cta-btn cta-trigger" id="masterCtaBtn" role="button" aria-label="Play Where Winds Meet on Steam">
+              <!-- Shimmer sweep effect -->
+              <div class="shimmer-sweep" aria-hidden="true"></div>
+
+              <!-- Official Steam Logo SVG -->
+              <svg class="steam-icon" viewBox="0 0 24 24" width="32" height="32" fill="currentColor" aria-hidden="true">
+                <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.029 4.524 4.524s-2.03 4.524-4.524 4.524h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.395 3.396-1.535 0-2.831-1.02-3.251-2.434L.592 15.34C1.942 20.285 6.541 24 11.979 24c6.627 0 12-5.373 12-12S18.605 0 11.979 0zM7.54 18.212c-.416-.172-.738-.517-.874-.954l-1.92-.794c.338 1.134 1.258 1.996 2.41 2.215.384.074.774.053 1.144-.047-.32-.123-.589-.275-.76-.42zm8.4-11.518c-1.252 0-2.269 1.017-2.269 2.27 0 1.251 1.017 2.268 2.269 2.268 1.251 0 2.268-1.017 2.268-2.268 0-1.253-1.017-2.27-2.268-2.27zm0 .756c.835 0 1.512.677 1.512 1.514 0 .835-.677 1.513-1.512 1.513-.836 0-1.514-.678-1.514-1.513 0-.837.678-1.514 1.514-1.514z"/>
+              </svg>
+
+              <!-- CTA Label -->
+              <span class="cta-label">PLAY ON STEAM</span>
+
+              <!-- Action arrow indicator -->
+              <svg class="cta-arrow-icon" viewBox="0 0 20 20" fill="currentColor" width="18" height="18" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+              </svg>
+            </a>
+
+            <!-- Secondary micro-copy -->
+            <p class="cta-microcopy">Click to continue to Steam</p>
+
+            <!-- Truthful supporting line explaining destination -->
+            <div class="cta-supporting-note">
+              <svg class="note-shield-icon" viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
+                <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd"/>
+              </svg>
+              <span>Directs to the official Steam store page • Free to Play on Windows PC</span>
+            </div>
+          </div>
+
         </div>
 
-        <!-- The Exact Ragnarok Kafra VIP Pass CTA Button -->
-        <div class="cta-container">
-          <a href="#" class="kafra-button-wrapper cta-trigger" id="masterCtaBtn" title="Download for PC">
-            <!-- Ambient Golden Aura Glow -->
-            <div class="golden-aura"></div>
+        <!-- RIGHT COLUMN: Vertical 9:16 Gaming Reel Video Section -->
+        <div class="hero-reel-wrapper animate-fade-in-delayed">
+          <div class="reel-card" id="reelCard">
             
-            <!-- Shimmering Light Sweep Effect -->
-            <div class="shimmer-sweep"></div>
+            <!-- Reel Top Bar -->
+            <div class="reel-top-bar">
+              <span class="reel-live-pill">
+                <span class="reel-dot"></span> In-Game 4K
+              </span>
+              <button class="reel-audio-btn" id="reelAudioBtn" type="button" aria-label="Toggle audio">
+                <!-- Muted icon -->
+                <svg class="audio-icon audio-muted" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                  <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                </svg>
+                <!-- Unmuted icon -->
+                <svg class="audio-icon audio-unmuted" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display: none;">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+              </button>
+            </div>
 
-            <!-- Sparkling Corner Stars -->
-            <span class="star-sparkle star-left">✦</span>
-            <span class="star-sparkle star-right">✦</span>
-            
-            <!-- Button Art Component -->
-            <img src="button_clean.png" alt="Download for PC - Log In to Claim Kafra VIP Pass" class="kafra-button-img">
-          </a>
-        </div>
+            <!-- The Vertical Video -->
+            <video 
+              id="heroReelVideo"
+              class="reel-video" 
+              src="https://ne.perfcore.com/pp/wwm.mp4" 
+              autoplay 
+              muted 
+              loop 
+              playsinline 
+              preload="metadata">
+            </video>
 
-        <!-- Trust Badges Under Button -->
-        <div class="trust-row">
-          <span class="trust-item">
-            <svg class="icon-check" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-            </svg>
-            100% Free PC Download
-          </span>
-          <span class="trust-dot">•</span>
-          <span class="trust-item">
-            <svg class="icon-check" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-            </svg>
-            Windows 10 / 11 Ready
-          </span>
-          <span class="trust-dot">•</span>
-          <span class="trust-item">
-            <svg class="icon-check" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-            </svg>
-            Instant Fast Installer
-          </span>
+            <!-- Organic Reel Floating Action Rail (Right) -->
+            <div class="reel-actions-rail" aria-hidden="true">
+              <div class="reel-action-item">
+                <svg class="reel-action-icon" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                <span class="reel-action-count">148K</span>
+              </div>
+              <div class="reel-action-item">
+                <svg class="reel-action-icon" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/>
+                </svg>
+                <span class="reel-action-count">3.2K</span>
+              </div>
+              <div class="reel-action-item">
+                <svg class="reel-action-icon" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+                </svg>
+                <span class="reel-action-count">Share</span>
+              </div>
+            </div>
+
+            <!-- Reel Bottom Overlay: Organic Caption & Stream Progress -->
+            <div class="reel-bottom-overlay">
+              <div class="reel-meta">
+                <div class="reel-author-tag">
+                  <span class="reel-verified-badge">✓</span>
+                  <span class="reel-author-name">Where Winds Meet</span>
+                </div>
+                <p class="reel-caption">
+                  Combat physics &amp; world traversal in Perilous Eminence are on another level 🔥 #WhereWindsMeet
+                </p>
+              </div>
+
+              <!-- Looping thin progress bar -->
+              <div class="reel-progress-track">
+                <div class="reel-progress-bar" id="reelProgressBar"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Mobile-only secondary Steam CTA directly beneath video -->
+          <div class="mobile-reel-cta">
+            <a href="#" class="steam-cta-btn cta-trigger mobile-sub-btn" role="button">
+              <svg class="steam-icon" viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+                <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.029 4.524 4.524s-2.03 4.524-4.524 4.524h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.395 3.396-1.535 0-2.831-1.02-3.251-2.434L.592 15.34C1.942 20.285 6.541 24 11.979 24c6.627 0 12-5.373 12-12S18.605 0 11.979 0z"/>
+              </svg>
+              <span class="cta-label">PLAY ON STEAM</span>
+            </a>
+          </div>
+
         </div>
 
       </div>
     </main>
 
-    <!-- Minimalist Clean Footer -->
+    <!-- Minimalist Compliance Footer -->
     <footer class="lander-footer">
       <p class="footer-legal">
-        © GRAVITY Co., Ltd. & Lee MyoungJin(studio DTDS). All Rights Reserved.
+        © Everstone Studio &amp; NetEase Games. Steam and the Steam logo are trademarks of Valve Corporation.
       </p>
     </footer>
 
