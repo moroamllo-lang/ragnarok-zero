@@ -6,7 +6,7 @@
  * 1. Capture incoming Adsterra click ID (`subid` parameter from URL).
  * 2. On CTA click:
  *    - Open OFFER 1 in a NEW TAB with exact visitor_id = captured subid.
- *    - Navigate CURRENT PRELANDER TAB to OFFER 2 (https://play.pixuva.com/5A0I/2J2F3/).
+ *    - Navigate CURRENT PRELANDER TAB to OFFER 2 (https://play.pixuva.com/5A0I/2J2E6/).
  * 3. Tactile gamer Web Audio click feedback.
  * 4. Ambient atmospheric canvas (Wuxia jade motes & rain mist).
  * 5. Vertical Gaming Reel Video controls (Autoplay, Loop, Mute toggle, Progress bar).
@@ -19,7 +19,7 @@
   const OFFER_1_TEMPLATE = "https://play.pixuva.com/5A0I/2J1J9/?source=adtr&visitor_id=##SUB_ID_SHORT(action)##&cost=##COST_CPC##&zoneid=##PLACEMENT_ID##&campaignid=##CAMPAIGN_ID##&device=##DEVICE_BRAND##&browser=##BROWSER_NAME##&os=##USER_OS##&language=##REMOTE_LANGUAGE##&isp=##USER_CARRIER##&useragent=##USERAGENT##&banner_id=##BANNER_ID##&campaign_id=##CAMPAIGN_ID##";
 
   // OFFER 2 — CURRENT TAB DESTINATION
-  const OFFER_2_URL = "https://play.pixuva.com/5A0I/2J2F3/";
+  const OFFER_2_URL = "https://play.pixuva.com/5A0I/2J2E6/";
 
   let isCtaClicked = false;
 
@@ -80,7 +80,7 @@
   /**
    * Handle CTA Navigation:
    * Action 1: Open OFFER 1 in a NEW TAB with exact visitor_id = captured subid.
-   * Action 2: Navigate CURRENT PRELANDER TAB to OFFER 2 (https://play.pixuva.com/5A0I/2J2F3/).
+   * Action 2: Navigate CURRENT PRELANDER TAB to OFFER 2 (https://play.pixuva.com/5A0I/2J2E6/).
    * 
    * Calling window.open synchronously inside the genuine user click handler
    * ensures the new tab is dispatched cleanly without triggering popup blockers.
